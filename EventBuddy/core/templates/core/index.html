@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    
+    <section class=" flex flex-row items-center justify-around flex-wrap">
+        <div class="max-w-md">
+            <h2 class="text-4xl my-6 bg-green-500 text-white inline-block p-2 rounded-md">EventBuddy</h2>
+            <h6 class="text-xl">Eventbuddy is one of the greatest event apps for finding local happenings of all kinds. Music festivals, craft shows, and even bar crawls are right at your fingertips.</h6>
+        
+        </div>
+        {% load static %}
+    <img src="{% static 'core/hero.webp' %}" alt=" image" width="500px" height="500px" class="rounded-md">
+    </section>
+
+    <section class="mt-6 p-6 bg-gray-100 rounded-xl grid grid-cols-3 gap-8">
+
+        {% if request.user.is_authenticated %}
+            {% if events %}
+            {%for event in events%}
+
+            <div class="h-[512px]">
+                <a href="{% url 'event:detail' event.id %}">
+                    <div class="h-4/5 w-full">
+                        <img src="{{ event.poster.url }}" class="rounded-md object-cover w-full h-full">
+                    </div>
+
+                    <div class="rounded-md p-4 bg-white">
+                        <h2 class="text-xl">{{ event.title }}</h2>
+                        <h2 class="text-md font-semibold">{{ event.timings }}</h2>
+                    </div>
+                </a>
+            </div>
+            {%endfor%}
+
+            {%else%}
+            <div class="w-full text-center">No events 😓 add events by <a href="{% url 'event:new' %}" class="hover:underline text-green-500 font-semibold">creating your own</a></div>
+            {% endif %}
+
+            
+        {%else%}
+        <p class="text-center font-semibold text-lg col-span-full">Login or signup to view the events</p>
+            <div class="flex items-center gap-4 flex-wrap justify-center col-span-full">
+                <a href="{% url 'core:signup' %}" class="px-4 py-2 text-lg font-semibold bg-teal-500 text-white rounded-md hover:bg-teal-700 text-center">Sign up</a>
+                <a href="{% url 'core:login' %}" class="px-6 py-2 text-lg font-semibold bg-gray-500 text-white rounded-md hover:bg-gray-700 text-center">Log in</a>
+            </div>
+        {% endif %}
+            
+    </section>
+{% endblock %}

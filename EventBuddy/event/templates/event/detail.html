@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<section class="grid grid-cols-1 gap-6 justify-items-center md:grid-cols-2">
+
+
+    <div class="p-6 bg-gray-100 rounded-xl w-full">
+        <h1 class="mb-6 text-3xl">{{ event.title }}</h1>
+
+        {% if event.description %}
+        <div class="text-gray-700">
+            <strong>Description:</strong><br>
+            <article>{{ event.description }}</article>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div>
+        <div class="bg-gray-100">
+            <img src="{{ event.poster.url }}" class=" max-h-[90vh] mx-auto">
+        </div>
+            
+        <div class="flex flex-col gap-4 my-6">
+            <div>
+                <p class="text-gray-500"><strong>Created By: </strong>{{ event.created_by.username }}</p>
+                <p class="text-gray-500"><strong>at </strong>{{ event.created_at }}</p>
+            </div>
+
+            <div><strong>Timings: </strong>{{ event.timings }}</div>
+
+            {%if event.registration_link %}
+            <div>
+                <strong class="text-gray-500">registration link:</strong>
+                <a href="{{ event.registration_link }}" target="_blank">{{ event.registration_link }}</a>
+            </div>
+            {% endif %}
+
+            {%if event.location_name %}
+            <div>
+                <strong class="text-gray-500">location:</strong>
+                <a href="{{event.latitude}}" target="_blank">{{ event.location_name }}</a>
+            </div>
+            {% endif %}
+            
+            <div class="space-x-4">
+                <strong class="text-gray-500">Tags</strong>
+                {%for tag in tags %}
+                <span>{{tag}}</span>
+                {%endfor%}
+                
+            </div>
+
+            <div>
+                {% if request.user == event.created_by %}
+                <div class=" bg-white rounded-xl w-full flex flex-row items-center justify-around gap-12">
+                    <a href="{% url 'event:edit' event.id %}"
+                        class="inline-block py-2 text-base font-semibold bg-teal-500 text-white rounded-md w-full  text-center">Edit</a>
+                    <a href="{% url 'event:delete' event.id %}"
+                        class="inline-block py-2 text-base font-semibold bg-red-500 text-white rounded-md w-full text-center">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+{% endblock %}
