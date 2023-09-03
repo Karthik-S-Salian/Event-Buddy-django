@@ -32,3 +32,15 @@ class Event(models.Model):
     
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    event = models.ForeignKey(Event,on_delete=models.CASCADE,related_name='comments')
+    created_by = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    body = models.TextField()
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.created_by.username)

@@ -4,8 +4,6 @@
 
 {% block content %}
 <section class="grid grid-cols-1 gap-6 justify-items-center md:grid-cols-2">
-
-
     <div class="p-6 bg-gray-100 rounded-xl w-full">
         <h1 class="mb-6 text-3xl">{{ event.title }}</h1>
 
@@ -66,6 +64,27 @@
         </div>
     </div>
 </section>
+<section class="w-full">
+    <h1>Comments</h1>
+    <div class="w-full">
+        <h3>Leave a comment</h3>
+        <form method="post" style="margin-top: 1.3em;">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <button type="submit" class="my-4 px-4 py-2 text-lg font-semibold bg-teal-500 text-white rounded-md hover:bg-teal-700">Submit</button>
+        </form>
+    </div>
 
-</div>
+    {% for comment in comments %}
+        <div class="p-2 border"> 
+         <p class="font-semibold"> 
+           {{ comment.created_by.username }} 
+           <span class="ml-4 font-medium text-gray-700"> 
+             {{ comment.created_on }}
+            </span>
+          </p>
+          {{ comment.body | linebreaks }}
+        </div>
+        {% endfor %}
+</section>
 {% endblock %}

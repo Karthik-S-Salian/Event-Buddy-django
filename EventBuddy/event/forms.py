@@ -1,6 +1,5 @@
 from django import forms
-
-from .models import Event
+from .models import Event,Comment
 
 INPUT_CLASSES = 'w-full py-4 px-6 border border-gray-400 my-2'
 
@@ -38,5 +37,18 @@ class EventForm(forms.ModelForm):
             }),
             'longitude': forms.NumberInput(attrs={
                 'class': INPUT_CLASSES
+            })
+        }
+
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields=("body",)
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'class': "w-full h-20 border px-2 py-2",
+                'placeholder':"leave a comment"
             })
         }
